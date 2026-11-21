@@ -327,6 +327,28 @@ footer{border-top:6px solid var(--sage);margin-top:24px}
 <li><a href="https://go.microsoft.com/fwlink/?linkid=2226877">Exam sandbox</a> for question formats</li>
 <li><a href="https://microsoftlearning.github.io/AB-650T00_administer_microsoft_365_and_ai_services/">Official hands-on labs</a></li>
 <li><a href="https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/delegate-by-task">Least privileged roles by task</a></li></ul></div>
+</div>
+<h2 style="margin-top:32px">Library</h2>
+<p class="lead">Extra sources, grouped by type. Microsoft's pages are the final word when sources disagree.</p>
+<div class="grid2">
+<div class="panel"><h3>Video course (free)</h3><ul class="notes">
+<li><a href="https://www.youtube.com/watch?v=Xme3QfC_XHE" target="_blank" rel="noopener">AB-650 full course in one video</a>, about 2 hours, Cloud Signal. Each Learn module links to its matching lesson.</li>
+<li><a href="https://www.youtube.com/watch?v=qHTe55dpFcU" target="_blank" rel="noopener">Lesson by lesson, starting with tenant setup</a></li>
+<li><a href="https://www.youtube.com/watch?v=xX5qHM1QWr8" target="_blank" rel="noopener">Checkpoint quiz</a></li>
+<li><a href="https://www.youtube.com/watch?v=XnrT1e_TTSg" target="_blank" rel="noopener">Practice exam, 40 questions</a></li>
+<li><a href="https://www.youtube.com/watch?v=myx1IjkxehI" target="_blank" rel="noopener">Flash notes for exam day</a></li>
+<li><a href="https://github.com/kombinerka/cloud-signal-labs/tree/main/ab-650" target="_blank" rel="noopener">Cheat sheets for each lesson</a>. Its PowerShell changes a tenant; use only a practice tenant.</li></ul>
+<p class="small">A small community channel. Use it to preview and review, and check surprising facts against Microsoft.</p></div>
+<div class="panel"><h3>Microsoft guides (free)</h3><ul class="notes">
+<li><a href="https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-blueprint-oversharing" target="_blank" rel="noopener">Prevent oversharing in Copilot: deployment blueprint</a> (<a href="https://www.microsoft.com/en-us/download/details.aspx?id=106329" target="_blank" rel="noopener">PDF</a>). Domain 3 and module 5.</li>
+<li><a href="https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-e3-guide" target="_blank" rel="noopener">Copilot admin guide, E3 + SAM</a> and <a href="https://learn.microsoft.com/en-us/copilot/microsoft-365/microsoft-365-copilot-e5-guide" target="_blank" rel="noopener">E5</a></li>
+<li><a href="https://learn.microsoft.com/en-us/microsoft-365/admin/manage/configure-release-options" target="_blank" rel="noopener">Release options: Frontier, Standard, Deferred</a></li></ul></div>
+<div class="panel"><h3>Books (paid)</h3><ul class="notes">
+<li><b>Pick this one first:</b> <a href="https://reference-global.com/book/9781807306502" target="_blank" rel="noopener">Microsoft 365 Copilot and Agent Administration Fundamentals</a>, Steve Miles, 2026. Written for AB-900, so lighter than AB-650, but strong on Copilot and agents.</li>
+<li><a href="https://techcommunity.microsoft.com/discussions/microsoft-365/announcing-microsoft-365-for-it-pros-2027-edition/4532426" target="_blank" rel="noopener">Microsoft 365 for IT Pros, 2027 edition</a>. A large, regularly updated reference.</li>
+<li><a href="https://www.oreilly.com/library/view/microsoft-365-administration/9781835888025/" target="_blank" rel="noopener">Microsoft 365 Administration Cookbook, 2nd edition</a>, 2024. Hands-on recipes; best once you have a tenant.</li>
+<li><a href="https://www.oreilly.com/library/view/microsoft-365-administrator/9781835083963/" target="_blank" rel="noopener">Microsoft 365 Administrator MS-102 Exam Guide</a>, 2023. Older, still solid on identity and security.</li></ul>
+<p class="small">Check whether your library offers free O'Reilly access before buying.</p></div>
 <div class="panel"><h3>Community notes</h3><ul class="notes">
 <li><a href="https://vladtalkstech.com/ab-650-study-guide-microsoft-365-and-ai-services-administrator-associate/">Vlad Talks Tech: notes per skill</a></li>
 <li><a href="https://charbelnemnom.com/ab-650-exam-study-guide/">Charbel Nemnom: exam guide</a></li></ul>
@@ -357,6 +379,8 @@ const PATHS=[
 {t:"Learning path 2: Govern and secure tenants and workloads",u:"https://learn.microsoft.com/training/paths/govern-secure-microsoft-365-tenants-workloads/",m:[["Provision and govern identities in Microsoft Entra","provision-govern-identities-entra"],["Implement authentication and access in Microsoft Entra","implement-authentication-access-entra"],["Secure email and collaboration with Defender for Office 365","secure-email-collaboration-defender-office365"],["Protect information with Microsoft Purview information protection","protect-information-purview"],["Prevent data loss and govern the data lifecycle with Purview","prevent-data-loss-lifecycle-purview"]]},
 {t:"Learning path 3: Manage and secure AI services",u:"https://learn.microsoft.com/training/paths/manage-secure-microsoft-365-ai-services/",m:[["Assess readiness and roll out Microsoft Copilot","enable-manage-microsoft-365-copilot"],["Configure Copilot settings and extensibility","configure-copilot-settings-extensibility"],["Establish agent identities with Microsoft Entra Agent ID","establish-agent-identities-entra-agent-id"],["Curate and control agents with the Agent Registry and Agent 365 tools","curate-control-agents-registry-tools"],["Monitor and manage agents with Microsoft Agent 365","agent-365-monitor-manage"],["Govern agents using Agent 365","agent-365-govern"],["Monitor and optimize Microsoft 365 AI services","monitor-optimize-m365-ai-services"]]}];
 
+const VID={"provision-brand-microsoft-365-tenant": ["E01", 0], "license-microsoft-365-ai-services": ["E01", 0], "maintain-microsoft-365-tenant-health": ["E02", 598], "configure-exchange-teams": ["E03", 993], "govern-sharepoint-onedrive-copilot": ["E03", 993], "provision-govern-identities-entra": ["E04 and E05", 1352], "implement-authentication-access-entra": ["E06", 2285], "secure-email-collaboration-defender-office365": ["E07", 2845], "protect-information-purview": ["E08", 3374], "prevent-data-loss-lifecycle-purview": ["E09", 3867], "enable-manage-microsoft-365-copilot": ["E10", 4271], "configure-copilot-settings-extensibility": ["E11 and E12", 4759], "establish-agent-identities-entra-agent-id": ["E13", 5607], "curate-control-agents-registry-tools": ["E14", 6119], "agent-365-monitor-manage": ["E15", 6540], "agent-365-govern": ["E15", 6540], "monitor-optimize-m365-ai-services": ["E16", 6936]};
+const VURL="https://www.youtube.com/watch?v=Xme3QfC_XHE";
 const KEY="ab650-study-v1";
 let S={conf:{},mods:{"provision-brand-microsoft-365-tenant":"done"},exam:"",flash:{}};
 try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
@@ -418,7 +442,7 @@ let resetArmed=false;
 $("resetall").onclick=()=>{if(!resetArmed){resetArmed=true;$("resetmsg").textContent="Click again to clear all ratings.";return}S.conf={};save();resetArmed=false;$("resetmsg").textContent="Ratings cleared.";drawSkills()};
 
 function drawLearn(){
- $("paths").innerHTML=PATHS.map(p=>'<details open><summary>'+esc(p.t)+'</summary><p class="small"><a href="'+p.u+'">Open on Microsoft Learn</a></p>'+p.m.map((m,i)=>'<div class="mod"><div>'+(i+1)+'. <a href="'+ML+m[1]+'/">'+esc(m[0])+'</a></div><select data-m="'+m[1]+'" aria-label="Status of '+esc(m[0])+'">'+[["todo","Not started"],["doing","In progress"],["done","Done"]].map(o=>'<option value="'+o[0]+'"'+((S.mods[m[1]]||"todo")===o[0]?" selected":"")+'>'+o[1]+'</option>').join('')+'</select></div>').join('')+'</details>').join('');
+ $("paths").innerHTML=PATHS.map(p=>'<details open><summary>'+esc(p.t)+'</summary><p class="small"><a href="'+p.u+'">Open on Microsoft Learn</a></p>'+p.m.map((m,i)=>'<div class="mod"><div>'+(i+1)+'. <a href="'+ML+m[1]+'/">'+esc(m[0])+'</a>'+(VID[m[1]]?'<br><a class="small" href="'+VURL+'&t='+VID[m[1]][1]+'s" target="_blank" rel="noopener">Video preview: '+VID[m[1]][0]+'</a>':'')+'</div><select data-m="'+m[1]+'" aria-label="Status of '+esc(m[0])+'">'+[["todo","Not started"],["doing","In progress"],["done","Done"]].map(o=>'<option value="'+o[0]+'"'+((S.mods[m[1]]||"todo")===o[0]?" selected":"")+'>'+o[1]+'</option>').join('')+'</select></div>').join('')+'</details>').join('');
 }
 $("paths").addEventListener("change",e=>{const s=e.target.closest("select[data-m]");if(!s)return;S.mods[s.dataset.m]=s.value;save()});
 
