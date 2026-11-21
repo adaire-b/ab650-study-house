@@ -89,7 +89,7 @@ button,select,input{font:inherit;font-size:16px;color:inherit}
 .conf{display:flex;gap:4px}
 .conf button{min-width:44px;min-height:44px;border-radius:8px;border:2px solid var(--line);background:var(--wall);cursor:pointer;font-weight:800}
 .conf button[aria-pressed=true]{background:var(--em);border-color:var(--em);color:var(--onem)}
-#fdeck button[aria-pressed=true]{background:var(--em);color:var(--onem)}
+#gfilter button[aria-pressed=true],#fdeck button[aria-pressed=true]{background:var(--em);color:var(--onem)}
 .conf button[data-v="0"][aria-pressed=true]{background:var(--pinkd);border-color:var(--pinkd);color:var(--onem)}
 details{border:1px solid var(--line);border-radius:12px;padding:6px 16px;margin:10px 0;background:var(--wall)}
 summary{cursor:pointer;font-weight:800;padding:10px 0;min-height:44px}
@@ -107,6 +107,12 @@ summary{cursor:pointer;font-weight:800;padding:10px 0;min-height:44px}
 .mod select{min-height:44px;border-radius:8px;border:2px solid var(--line);background:var(--wall);padding:0 8px}
 .notes{padding-left:1.2em;margin:0}
 .notes li{margin-bottom:6px}
+.gterm{display:grid;grid-template-columns:minmax(9em,14em) minmax(0,1fr) auto;gap:4px 16px;padding:12px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.gterm b{font-size:17px}
+.tag{font-size:13px;border-radius:999px;padding:2px 10px;background:var(--sagel);white-space:nowrap}
+.tag.b{background:var(--pink)}
+@media(max-width:600px){.gterm{grid-template-columns:minmax(0,1fr) auto}.gterm .gd{grid-column:1/-1;grid-row:2}}
+.selfq summary{font-weight:600}
 /* practice */
 .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 18px}
 .tabs button{min-height:44px;padding:8px 16px;border-radius:999px;border:2px solid var(--em);background:var(--wall);font-weight:600;cursor:pointer}
@@ -155,7 +161,7 @@ footer{border-top:6px solid var(--sage);margin-top:24px}
 </head>
 <body>
 <header><div class="wrap"><a class="brand" href="#home">AB-650 Study House</a>
-<nav aria-label="Main"><a href="#home">Home</a><a href="#learn">Learn</a><a href="#practice">Practice</a><a href="#skills">Skills map</a><a href="#links">Links</a></nav><div id="acct" aria-live="polite"></div></div></header>
+<nav aria-label="Main"><a href="#home">Home</a><a href="#learn">Learn</a><a href="#practice">Practice</a><a href="#skills">Skills map</a><a href="#glossary">Glossary</a><a href="#links">Links</a></nav><div id="acct" aria-live="polite"></div></div></header>
 
 <main>
 <section id="v-home" class="view band"><div class="wrap home">
@@ -239,7 +245,7 @@ footer{border-top:6px solid var(--sage);margin-top:24px}
 <li>Services: calendar sharing and report privacy. Enabling a capability doesn't apply it to everyone.</li>
 <li>The sold-to address is under Billing &gt; Billing accounts.</li></ul></div>
 </div>
-<p class="small">Full notes, screenshots, and the self-test are in your workbook's Study guide. Links are on the Links page.</p>
+<p class="small">Test yourself with the <a href="#practice">Self-test</a> on the Practice page, and look up any word in the <a href="#glossary">Glossary</a>.</p>
 </div>
 
 <h2 style="margin-top:36px">All 17 modules</h2>
@@ -254,7 +260,7 @@ footer{border-top:6px solid var(--sage);margin-top:24px}
 <h1>Practice like it's the job</h1>
 <p class="lead">Four drills built from module 1. More drills unlock as chapters are added.</p>
 <div class="tabs" role="tablist">
-<button role="tab" data-p="sim" aria-selected="true">Admin center simulator</button><button role="tab" data-p="role">Role picker</button><button role="tab" data-p="quiz">Quiz</button><button role="tab" data-p="flash">Flashcards</button></div>
+<button role="tab" data-p="sim" aria-selected="true">Admin center simulator</button><button role="tab" data-p="role">Role picker</button><button role="tab" data-p="quiz">Quiz</button><button role="tab" data-p="flash">Flashcards</button><button role="tab" data-p="self">Self-test</button></div>
 
 <div class="pane on" id="p-sim">
 <p class="small">A practice copy of the menus, simplified. It isn't a Microsoft product, and real menus may differ. Read the ticket, then click to the setting that solves it.</p>
@@ -280,6 +286,11 @@ footer{border-top:6px solid var(--sage);margin-top:24px}
 <div class="row"><button class="btn pri" id="qnext">Next question</button><span class="score" id="qscore"></span></div>
 </div>
 
+<div class="pane" id="p-self">
+<p class="small">Seventeen questions from Chapter 1. Answer each one out loud first, then open it to check.</p>
+<div class="row" style="margin:0 0 8px"><button class="btn" id="selfopen">Show all answers</button><button class="btn" id="selfclose">Hide all answers</button></div>
+<div id="selflist"></div>
+</div>
 <div class="pane" id="p-flash">
 <div class="row" id="fdeck" style="margin:0 0 12px"><button class="btn" data-d="c" aria-pressed="true">Concepts</button><button class="btn" data-d="a" aria-pressed="false">Exam core</button><button class="btn" data-d="b" aria-pressed="false">Background</button></div>
 <p class="small">Tap the card to flip it. Cards you mark shaky come back more often. Background terms are old or on-premises words: recognize them, then move on.</p>
@@ -296,14 +307,18 @@ footer{border-top:6px solid var(--sage);margin-top:24px}
 <p class="small">Skills list from Microsoft's AB-650 study guide, last updated July 27, 2026. Ratings stay in this browser only.</p>
 </div></section>
 
+<section id="v-glossary" class="view band"><div class="wrap">
+<h1>Every term in one place</h1>
+<p class="lead">Search the concepts and acronyms from your flashcards. Exam core terms matter for AB-650; Background terms are old or on-premises words to recognize and move on.</p>
+<div class="row" style="margin-bottom:12px"><label for="gsearch" class="small" style="flex-basis:100%">Search terms and definitions</label><input id="gsearch" type="search" placeholder="Try MFA, license, or sign-in" style="min-height:44px;border-radius:8px;border:2px solid var(--line);padding:0 12px;background:var(--wall);flex:1 1 260px"></div>
+<div class="row" id="gfilter" style="margin:0 0 12px"><button class="btn" data-g="all" aria-pressed="true">All</button><button class="btn" data-g="c" aria-pressed="false">Concepts</button><button class="btn" data-g="a" aria-pressed="false">Exam core</button><button class="btn" data-g="b" aria-pressed="false">Background</button><span class="small" id="gcount"></span></div>
+<div id="glist"></div>
+</div></section>
+
 <section id="v-links" class="view band"><div class="wrap">
 <h1>Where everything lives</h1>
 <div class="grid2">
-<div class="panel"><h3>Your workbook</h3><ul class="notes">
-<li><a href="https://claude.ai/artifact/BExW5d41dZcx4FVuk9uhwF">Session plan and Ticket 001</a></li>
-<li><a href="https://claude.ai/artifact/BExW5d41dZcx4FVuk9uhwF#b42d5ce8-39e1">Concept log</a></li>
-<li><a href="https://claude.ai/artifact/BExW5d41dZcx4FVuk9uhwF#ebb78e84-53c0">Storybook</a></li>
-<li><a href="https://claude.ai/artifact/BExW5d41dZcx4FVuk9uhwF#598ab125-b734">Study guide</a></li></ul></div>
+<div class="panel"><h3>On this site</h3><ul class="notes"><li><a href="#learn">Chapter notes and the module tracker</a></li><li><a href="#glossary">Glossary of every term and acronym</a></li><li><a href="#practice">Practice: simulator, role picker, quiz, flashcards, self-test</a></li><li><a href="#skills">Skills map</a></li></ul></div>
 <div class="panel"><h3>Microsoft</h3><ul class="notes">
 <li><a href="https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650">AB-650 study guide</a></li>
 <li><a href="https://learn.microsoft.com/en-us/credentials/certifications/ai-services-administrator-associate/">Certification and exam page</a></li>
@@ -496,10 +511,23 @@ $("fshaky").onclick=()=>{S.flash[fk(fc.i)]="s";save();fcPick()};
 $("fknow").onclick=()=>{S.flash[fk(fc.i)]="k";save();fcPick()};
 $("fdeck").onclick=e=>{const b=e.target.closest("button[data-d]");if(!b)return;fc.d=b.dataset.d;document.querySelectorAll("#fdeck button").forEach(x=>x.setAttribute("aria-pressed",x===b));fcPick()};
 
+
+/* glossary */
+const GL=[...FC.map(x=>[x[0],x[1],"c"]),...AC.map(x=>[x[0],x[1],"a"]),...BG.map(x=>[x[0],x[1],"b"])].sort((x,y)=>x[0].localeCompare(y[0],undefined,{sensitivity:"base"}));
+const GTAG={c:"Concept",a:"Exam core",b:"Background"};
+let gf="all";
+function drawGloss(){const q=$("gsearch").value.trim().toLowerCase();const rows=GL.filter(x=>(gf==="all"||x[2]===gf)&&(!q||(x[0]+" "+x[1]).toLowerCase().includes(q)));$("gcount").textContent=rows.length+" of "+GL.length+" terms";$("glist").innerHTML=rows.length?rows.map(x=>'<div class="gterm"><b>'+esc(x[0])+'</b><span class="gd">'+esc(x[1])+'</span><span class="tag'+(x[2]==="b"?" b":"")+'">'+GTAG[x[2]]+'</span></div>').join(''):'<p>No matches. Try a shorter word.</p>'}
+$("gsearch").addEventListener("input",drawGloss);
+$("gfilter").onclick=e=>{const b=e.target.closest("button[data-g]");if(!b)return;gf=b.dataset.g;document.querySelectorAll("#gfilter button").forEach(x=>x.setAttribute("aria-pressed",x===b));drawGloss()};
+/* self-test */
+const SELF=[["Tomas needs to add and verify a domain. Which role, with least privilege?","Domain Name Administrator."],["You verified a new domain, but new users still get the old one. Why?","Verifying doesn't make a domain the default. Set the default separately."],["Owen asks if email works now that the domain is verified. What do you tell him?","Verified only proves ownership. Mail needs mailboxes first, then the MX record changed."],["Priya wants the company logo on the sign-in page. Which role and which admin center?","Organizational Branding Administrator, in the Entra admin center under Entra ID > Custom Branding."],["Dana wants the navigation bar in company colors. Which role?","Global Administrator."],["A user belongs to two groups with different themes. What does she see?","The default theme."],["You try to remove an old domain and it fails. What two things do you check?","That it isn't the default domain, and that nothing still uses it: users, groups, shared mailboxes, aliases, admin sign-ins."],["Which role assigns Domain Name Administrator to Tomas without being Global Admin?","Privileged Role Administrator."],["Where do you check where the tenant's data is stored?","Settings > Org settings > Organization profile > Data location."],["Lena wants staff names hidden in usage reports. Where is that setting?","Settings > Org settings > Services > Reports."],["Can you assign a custom theme to a security group?","No. Only Microsoft 365 groups."],["A role isn't listed in the Microsoft 365 admin center. Where do you look?","Entra admin center > Roles & admins."],["Five help-desk staff should see some updates early, but nobody else. Which setting and option?","Organization profile > Release preferences > Targeted release for select users. Global Administrator, up to 24 hours."],["You turned on calendar external sharing. Are everyone's calendars now shared?","No. The setting allows sharing. Each user still chooses."],["Owen wants Teams notification emails to come from redrockcompounding.example. The domain is verified. Is that enough?","No. It must also be set up for email (SPF, DKIM, DMARC, MX). Then use Organization profile > Send email notifications from your domain."],["Dana wants to update the company's sold-to address. Where?","Billing > Billing accounts, not Org settings."],["Which role sets the password expiration policy, and which users does it not cover?","User Administrator. It doesn't cover hybrid users whose passwords are managed on-premises."]];
+$("selflist").innerHTML=SELF.map((x,i)=>'<details class="selfq"><summary>'+(i+1)+'. '+esc(x[0])+'</summary><p>'+esc(x[1])+'</p></details>').join('');
+$("selfopen").onclick=()=>document.querySelectorAll("#selflist details").forEach(d=>d.open=true);
+$("selfclose").onclick=()=>document.querySelectorAll("#selflist details").forEach(d=>d.open=false);
 /* tabs and routing */
 document.querySelector(".tabs").onclick=e=>{const b=e.target.closest("button[data-p]");if(!b)return;document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",x===b));document.querySelectorAll(".pane").forEach(p=>p.classList.toggle("on",p.id==="p-"+b.dataset.p))};
-const VIEWS=["home","learn","practice","skills","links"];
-function route(){const h=location.hash.slice(1);const v=VIEWS.includes(h)?h:"home";VIEWS.forEach(x=>$("v-"+x).classList.toggle("on",x===v));document.querySelectorAll("nav a").forEach(a=>{if(a.getAttribute("href")==="#"+v)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});if(v==="home")drawHome();if(v==="skills")drawSkills();if(v==="learn")drawLearn();window.scrollTo(0,0)}
+const VIEWS=["home","learn","practice","skills","glossary","links"];
+function route(){const h=location.hash.slice(1);const v=VIEWS.includes(h)?h:"home";VIEWS.forEach(x=>$("v-"+x).classList.toggle("on",x===v));document.querySelectorAll("nav a").forEach(a=>{if(a.getAttribute("href")==="#"+v)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});if(v==="home")drawHome();if(v==="skills")drawSkills();if(v==="learn")drawLearn();if(v==="glossary")drawGloss();window.scrollTo(0,0)}
 window.addEventListener("hashchange",route);
 drawSkills();drawLearn();simTicket();roleNext();qDraw();fcPick();route();
 startSync(()=>{drawSkills();drawLearn();fcDraw();route()});
