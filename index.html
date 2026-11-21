@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AB-650 Study House</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE everyday study tool, warm and calm
+   IDEA the Juniper & Sage apartment from the storybook: floors are exam domains, rooms are skill groups, windows light up as you learn
+   PICTURE an illustrated cut-away building whose rooms fill with warm window light as confidence grows
+   COLOUR warm ivory ground, deep evergreen for actions, muted sage trim, golden window light for progress
+   TYPE Schibsted Grotesk 800 display + Schibsted Grotesk text
+   LAYOUT desktop: title, Resume button and progress left, building right; phone: title, Resume, building, progress */
+:root{color-scheme:light dark;--bg:light-dark(#fbf7ee,#0f1612);--ink:light-dark(#1c2a21,#edf1ea);--mute:light-dark(#55625a,#a9b5ab);--em:light-dark(#1f5a3f,#7cc49b);--emd:light-dark(#163f2c,#a7dcbc);--onem:light-dark(#ffffff,#0f1612);--sage:light-dark(#8fac8c,#4c6750);--sagel:light-dark(#e3ebdd,#1c2820);--glow:light-dark(#f4bf4f,#e2ab45);--wall:light-dark(#fffdf6,#222c25);--pink:light-dark(#ece4d2,#1a221d);--pinkd:light-dark(#a8402f,#ff9a86);--panel:light-dark(#f4eee1,#16201a);--line:light-dark(#e0d5bf,#2e3b32);--hdr:light-dark(#1f5a3f,#173a28);--flab:light-dark(#d4e0cd,#2b3d30)}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 "Schibsted Grotesk",system-ui,sans-serif;overflow-x:clip}
+img{max-width:100%;height:auto;display:block}
+[hidden]{display:none!important}
+a{color:var(--em)}
+h1,h2,h3{font-weight:800;letter-spacing:-.02em;line-height:1.08;text-wrap:balance;margin:0 0 .4em}
+h1{font-size:clamp(32px,4.4vw,48px)}
+h2{font-size:clamp(24px,2.6vw,30px)}
+h3{font-size:19px}
+p{margin:0 0 .8em;max-width:70ch}
+.band{padding:clamp(24px,3.5vw,52px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+header{position:sticky;top:0;z-index:5;background:var(--hdr);color:#fff;border-bottom:5px solid var(--sage)}
+header .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;padding:10px max(5vw,16px)}
+.brand{font-weight:800;font-size:19px;margin-right:auto;color:#fff;text-decoration:none}
+nav{display:flex;flex-wrap:wrap;gap:4px}
+nav a{color:#fff;text-decoration:none;padding:10px 14px;border-radius:8px;font-weight:600;min-height:44px;display:inline-flex;align-items:center}
+nav a[aria-current=page]{background:var(--bg);color:var(--ink)}
+a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--glow);outline-offset:2px}
+#acct{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px}
+#acct:empty{display:none}
+.acctbtn{min-height:44px;padding:6px 14px;border-radius:8px;border:2px solid #fff;background:transparent;color:#fff;font-weight:600;cursor:pointer}
+.acctbtn:hover{background:#fff;color:#1f5a3f}
+.view{display:none}
+.view.on{display:block}
+.lead{font-size:18px;color:var(--mute)}
+button,select,input{font:inherit;font-size:16px;color:inherit}
+.btn{min-height:44px;padding:8px 16px;border-radius:10px;border:2px solid var(--em);background:var(--bg);color:var(--ink);font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{background:var(--panel)}
+.btn.pri{background:var(--em);color:var(--onem)}
+.btn.pri:hover{background:var(--emd);border-color:var(--emd)}
+.btn.big{min-height:56px;padding:12px 24px;font-size:18px;border-radius:12px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:18px}
+.small{font-size:14px;color:var(--mute)}
+/* home */
+.home{display:grid;gap:22px 40px;grid-template-areas:"hero" "pic" "meta"}
+.hero{grid-area:hero}
+.pic{grid-area:pic}
+.meta{grid-area:meta}
+@media(min-width:900px){.home{grid-template-columns:minmax(0,.85fr) minmax(0,1.4fr);grid-template-areas:"hero pic" "meta pic";align-items:start}}
+#resumewhat{margin-top:10px}
+.exam{display:grid;gap:6px;margin-top:6px}
+.exam label{font-weight:600}
+.exam input{min-height:44px;border-radius:8px;border:2px solid var(--line);padding:0 10px;background:var(--wall);max-width:240px}
+/* building */
+.house{position:relative}
+.roof{height:56px;background:var(--hdr);clip-path:polygon(3% 100%,50% 0,97% 100%);margin:0 1%;position:relative}
+.roof::after{content:"";position:absolute;left:50%;top:26px;width:22px;height:22px;margin-left:-11px;border-radius:50%;background:var(--glow)}
+.floors{background:var(--hdr);padding:6px;display:grid;gap:6px;border-inline:4px solid var(--sage)}
+.floor{display:flex;flex-wrap:wrap;gap:6px;background:var(--hdr)}
+.flabel{flex:1 1 100%;background:var(--flab);color:var(--ink);font-weight:800;font-size:14px;padding:4px 10px;border-radius:4px}
+.room{flex:var(--n) 1 150px;min-height:112px;position:relative;border:0;border-radius:4px;background:var(--wall);text-align:left;padding:8px;cursor:pointer;overflow:hidden;box-shadow:inset 0 -6px 0 color-mix(in srgb,var(--sage) 55%,transparent)}
+.room::before{content:"";position:absolute;inset:auto 0 0 0;height:var(--p);background:linear-gradient(to top,var(--glow),color-mix(in srgb,var(--glow) 55%,var(--wall)));transition:height .6s}
+.room.unrated{background:repeating-linear-gradient(135deg,var(--pink) 0 8px,var(--wall) 8px 16px)}
+.plaque{position:relative;display:inline-block;max-width:calc(100% - 44px);hyphens:auto;overflow-wrap:anywhere;background:color-mix(in srgb,#fffdf6 94%,transparent);color:#1c2a21;border-radius:6px;padding:6px 8px;font-weight:600;font-size:14px;line-height:1.25;box-shadow:0 1px 0 rgba(0,0,0,.12)}
+.plaque b{display:block;font-size:20px;margin-top:4px}
+.room.unrated .plaque b{font-size:15px;color:#6b5a3a}
+.win{position:absolute;right:8px;bottom:12px;width:30px;height:36px;border-radius:3px;border:3px solid var(--hdr);background:linear-gradient(var(--hdr),var(--hdr)) 50% 0/3px 100% no-repeat,linear-gradient(var(--hdr),var(--hdr)) 0 50%/100% 3px no-repeat,color-mix(in srgb,var(--ink) 18%,var(--wall))}
+.room.lit .win{background:linear-gradient(var(--hdr),var(--hdr)) 50% 0/3px 100% no-repeat,linear-gradient(var(--hdr),var(--hdr)) 0 50%/100% 3px no-repeat,#ffe08a;box-shadow:0 0 14px var(--glow)}
+.room:hover,.room:focus-visible{outline:3px solid var(--glow);outline-offset:-3px}
+.ground{height:16px;background:var(--sage);border-radius:0 0 8px 8px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(8.5em,1fr));gap:12px;margin:18px 0}
+.stat{border-top:4px solid var(--sage);padding-top:8px}
+.stat b{display:block;font-size:clamp(24px,2.6vw,32px);font-weight:800;white-space:nowrap}
+.key{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:14px;margin-top:10px;color:var(--mute)}
+.sw{display:inline-block;width:16px;height:16px;border-radius:3px;vertical-align:-3px;margin-right:6px;border:1px solid var(--line)}
+/* skills */
+.skill{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.conf{display:flex;gap:4px}
+.conf button{min-width:44px;min-height:44px;border-radius:8px;border:2px solid var(--line);background:var(--wall);cursor:pointer;font-weight:800}
+.conf button[aria-pressed=true]{background:var(--em);border-color:var(--em);color:var(--onem)}
+#fdeck button[aria-pressed=true]{background:var(--em);color:var(--onem)}
+.conf button[data-v="0"][aria-pressed=true]{background:var(--pinkd);border-color:var(--pinkd);color:var(--onem)}
+details{border:1px solid var(--line);border-radius:12px;padding:6px 16px;margin:10px 0;background:var(--wall)}
+summary{cursor:pointer;font-weight:800;padding:10px 0;min-height:44px}
+/* learn */
+.chapter{display:grid;gap:18px}
+.cover{display:grid;gap:18px 32px;align-items:center;background:var(--sagel);border-radius:16px;padding:clamp(16px,3vw,28px)}
+@media(min-width:820px){.cover{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.cover img{border-radius:12px;border:4px solid var(--wall)}
+.lesson{display:grid;gap:16px;align-items:start;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+@media(min-width:820px){.lesson{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}.lesson.flip>figure{order:2}}
+.lesson figure{margin:0}
+.lesson img{border-radius:10px}
+.lesson figcaption{font-size:14px;color:var(--mute);margin-top:6px}
+.mod{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.mod select{min-height:44px;border-radius:8px;border:2px solid var(--line);background:var(--wall);padding:0 8px}
+.notes{padding-left:1.2em;margin:0}
+.notes li{margin-bottom:6px}
+/* practice */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 18px}
+.tabs button{min-height:44px;padding:8px 16px;border-radius:999px;border:2px solid var(--em);background:var(--wall);font-weight:600;cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--em);color:var(--onem)}
+.pane{display:none}
+.pane.on{display:block}
+.ticket{background:var(--wall);border:1px solid var(--line);border-left:6px solid var(--em);border-radius:12px;padding:12px 16px}
+.ticket .th{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:14px;color:var(--mute);margin-bottom:4px}
+.ticket .th b{color:var(--em)}
+.ticket .tb{font-weight:600;font-size:17px}
+.sim{display:grid;grid-template-columns:minmax(200px,260px) minmax(0,1fr);border:2px solid var(--em);border-radius:12px;overflow:hidden;margin-top:12px;min-height:380px;background:var(--wall)}
+.simbar{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:var(--hdr);color:#fff;padding:8px 10px}
+.simbar button{min-height:40px;border-radius:8px;border:0;padding:6px 12px;font-weight:600;cursor:pointer;background:transparent;color:#fff}
+.simbar button[aria-pressed=true]{background:var(--bg);color:var(--ink)}
+.simnav{background:var(--panel);border-right:1px solid var(--line);padding:8px}
+.simnav button{display:block;width:100%;text-align:left;min-height:40px;border:0;background:transparent;padding:6px 10px;border-radius:6px;cursor:pointer}
+.simnav button:hover{background:var(--line)}
+.simnav .grp{font-weight:800}
+.simnav .sub{padding-left:26px;font-size:15px}
+.simmain{padding:14px 16px}
+.simtabs{display:flex;flex-wrap:wrap;gap:4px;border-bottom:2px solid var(--line);margin-bottom:10px}
+.simtabs button{min-height:40px;border:0;background:transparent;padding:6px 10px;cursor:pointer;font-weight:600;border-bottom:3px solid transparent}
+.simtabs button[aria-selected=true]{border-color:var(--em)}
+.leaf{display:block;width:100%;text-align:left;min-height:44px;border:0;border-bottom:1px solid var(--line);background:transparent;padding:8px 6px;cursor:pointer}
+.leaf:hover{background:var(--panel)}
+.fb{margin-top:12px;border-radius:10px;padding:12px 14px;display:none}
+.fb.ok{display:block;background:color-mix(in srgb,var(--em) 14%,var(--bg));border:2px solid var(--em)}
+.fb.no{display:block;background:color-mix(in srgb,var(--pinkd) 12%,var(--bg));border:2px solid var(--pinkd)}
+.path{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0;font-size:14px}
+.path span{background:var(--sagel);border-radius:6px;padding:2px 8px}
+.path span+span::before{content:"› ";color:var(--mute)}
+.crumb{font-size:14px;color:var(--mute);margin-bottom:6px}
+.opts{display:grid;gap:8px;margin-top:12px}
+.opt{min-height:48px;text-align:left;border:2px solid var(--line);border-radius:10px;background:var(--wall);padding:10px 14px;cursor:pointer}
+.opt.right{border-color:var(--em);background:color-mix(in srgb,var(--em) 15%,var(--bg))}
+.opt.wrong{border-color:var(--pinkd);background:color-mix(in srgb,var(--pinkd) 12%,var(--bg))}
+.score{font-weight:800;font-size:18px}
+.card{min-height:220px;border-radius:16px;border:3px solid var(--em);display:grid;place-items:center;text-align:center;padding:24px;cursor:pointer;background:var(--wall);font-size:20px}
+.card.back{background:var(--em);color:var(--onem);font-size:17px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+footer{border-top:6px solid var(--sage);margin-top:24px}
+@media(max-width:700px){.sim{grid-template-columns:minmax(0,1fr)}.simnav{border-right:0;border-bottom:1px solid var(--line)}}
+@media(max-width:600px){header{position:static}.room{flex-basis:46%;min-height:100px}.skill{grid-template-columns:minmax(0,1fr)}.btn.big{width:100%;justify-content:center}}
+@media(prefers-reduced-motion:reduce){.room::before{transition:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><a class="brand" href="#home">AB-650 Study House</a>
+<nav aria-label="Main"><a href="#home">Home</a><a href="#learn">Learn</a><a href="#practice">Practice</a><a href="#skills">Skills map</a><a href="#links">Links</a></nav><div id="acct" aria-live="polite"></div></div></header>
+
+<main>
+<section id="v-home" class="view band"><div class="wrap home">
+<div class="hero">
+<h1>Light up every room before exam day</h1>
+<p class="lead">Each floor is an exam domain and each room a skill group. Rate your confidence, and the windows light up.</p>
+<a class="btn pri big" id="resume" href="#practice">Resume studying</a>
+<p class="small" id="resumewhat"></p>
+</div>
+<div class="pic">
+<div class="house" aria-label="Skills building"><div class="roof"></div><div class="floors" id="floors"></div><div class="ground"></div></div>
+<div class="key"><span><i class="sw" style="background:repeating-linear-gradient(135deg,var(--pink) 0 4px,var(--wall) 4px 8px)"></i>Not rated</span><span><i class="sw" style="background:var(--wall)"></i>Rated low</span><span><i class="sw" style="background:var(--glow)"></i>Confident</span><span>Select a room to rate its skills.</span></div>
+</div>
+<div class="meta">
+<div class="stats" id="stats"></div>
+<div class="exam"><label for="examdate">Target exam date</label><input type="date" id="examdate"><p id="pace" class="small"></p></div>
+</div>
+</div></section>
+
+<section id="v-learn" class="view band"><div class="wrap">
+<div class="chapter">
+<div class="cover">
+<div>
+<p class="small">Learning path 1, module 1</p>
+<h1>Chapter 1: Provision and brand a tenant</h1>
+<p class="lead">Juniper &amp; Sage is adding a new division. It doesn't need a new apartment: it joins the existing tenant. This chapter covers who can change what, how domains are proven, where branding lives, and which organization settings apply to whom.</p>
+<div class="row"><a class="btn pri" href="https://learn.microsoft.com/en-us/training/modules/provision-brand-microsoft-365-tenant/" target="_blank" rel="noopener">Open the module</a><a class="btn" href="#practice">Practice this chapter</a></div>
+</div>
+<img src="p1-building.webp" width="1100" height="1204" alt="Avery and Mr. Graves outside the apartment building. Juniper and Sage rents one private apartment; the city behind it is the data location.">
+</div>
+
+<div class="lesson">
+<figure><img src="p2-register.webp" width="1100" height="733" loading="lazy" alt="Avery adds Red Rock staff to the resident register as Owen's team moves in."><figcaption>The register makes it your tenant.</figcaption></figure>
+<div><h2>The tenant is its directory</h2><ul class="notes">
+<li>A tenant is defined by its Entra ID directory, not by its domains or subscriptions. A new division joins the existing tenant.</li>
+<li>Four layers: tenant, subscription (such as E5), service plan (such as Exchange Online), and license (one user). Service plans can be switched off per license.</li>
+<li>Data location is set by the sign-up country. View it at Settings &gt; Org settings &gt; Organization profile &gt; Data location.</li></ul></div>
+</div>
+
+<div class="lesson flip">
+<figure><img src="p8-panels.webp" width="1100" height="825" loading="lazy" alt="Avery walks past the Microsoft 365 and Entra admin center panels and the Exchange, SharePoint, and Teams room panels."><figcaption>Many control panels, one apartment.</figcaption></figure>
+<div><h2>Many admin centers, one tenant</h2><ul class="notes">
+<li>Microsoft 365 admin center: organization-wide tasks such as users, billing, domains, and Org settings.</li>
+<li>Entra admin center: identity, roles, and the sign-in page.</li>
+<li>Exchange, SharePoint, and Teams admin centers: deeper settings for one service.</li>
+<li>The Microsoft 365 admin center shows only common roles. Entra &gt; Roles &amp; admins has the full catalog.</li></ul></div>
+</div>
+
+<div class="lesson">
+<figure><img src="p4-keys.webp" width="1100" height="733" loading="lazy" alt="Avery hands Tomas the Domain Name Administrator key; the Global Admin master key stays locked away."><figcaption>Smallest key that opens the door.</figcaption></figure>
+<div><h2>Least privilege</h2><ul class="notes">
+<li>Domains: Domain Name Administrator.</li>
+<li>Assigning admin roles: Privileged Role Administrator.</li>
+<li>Sign-in page branding: Organizational Branding Administrator.</li>
+<li>Themes, pronouns, and release preferences: Global Administrator. There's no narrower role.</li>
+<li>Viewing settings without changing them: Global Reader.</li></ul></div>
+</div>
+
+<div class="lesson flip">
+<figure><img src="p5-domain.webp" width="1100" height="550" loading="lazy" alt="Mr. Graves gives Tomas a verification code; Marcus posts it at the domain registrar."><figcaption>Prove the address is yours, then verify.</figcaption></figure>
+<div><h2>Domains</h2><ul class="notes">
+<li>Settings &gt; Domains &gt; Add domain, publish the TXT record at the DNS host, then Verify.</li>
+<li>Verified isn't the default, and isn't mail-ready. TXT proves ownership; MX routes mail. Create mailboxes before changing MX.</li>
+<li>onmicrosoft.com can never be removed. To remove a custom domain, it must not be the default and must have zero references.</li>
+<li>Domain Connect still needs someone with the registrar login.</li></ul></div>
+</div>
+
+<div class="lesson">
+<figure><img src="p6-decorating.webp" width="1100" height="550" loading="lazy" alt="Avery brands the front door with Entra company branding while Priya paints the rooms with the Microsoft 365 theme."><figcaption>Two places to decorate.</figcaption></figure>
+<div><h2>Branding: before or after sign-in?</h2><ul class="notes">
+<li>Before sign-in: Entra ID &gt; Custom Branding, by the Organizational Branding Administrator. Tenant-wide; a language-specific setup wins when it matches.</li>
+<li>After sign-in: Org settings &gt; Organization profile &gt; Custom themes, by a Global Administrator.</li>
+<li>1 default plus up to 4 group themes, each for up to 5 Microsoft 365 groups. A user in two themed groups sees the default.</li></ul></div>
+</div>
+
+<div class="lesson flip">
+<figure><img src="p7-rules.webp" width="1100" height="733" loading="lazy" alt="Dana pins the organization settings to the fridge: release preferences and hiding names in reports."><figcaption>Household rules for everyone.</figcaption></figure>
+<div><h2>Organization settings</h2><ul class="notes">
+<li>Security &amp; privacy: password expiration (User Administrator, cloud-only accounts) and pronouns (Global Administrator, up to 7 hours).</li>
+<li>Organization profile: data location, themes, release preferences, and the send-from domain. Release and send-from changes take up to 24 hours.</li>
+<li>Services: calendar sharing and report privacy. Enabling a capability doesn't apply it to everyone.</li>
+<li>The sold-to address is under Billing &gt; Billing accounts.</li></ul></div>
+</div>
+<p class="small">Full notes, screenshots, and the self-test are in your workbook's Study guide. Links are on the Links page.</p>
+</div>
+
+<h2 style="margin-top:36px">All 17 modules</h2>
+<p class="lead">Track each module here. Module links open Microsoft Learn. Chapters are added as you finish modules.</p>
+<div id="paths"></div>
+<details><summary>Optional extras</summary><ul class="notes" style="margin-bottom:12px">
+<li>Understand Microsoft Entra ID (done). A primer before learning path 2.</li>
+<li><a href="https://learn.microsoft.com/training/modules/create-configure-manage-identities/" target="_blank" rel="noopener">Create, configure, and manage identities</a> (SC-300 path). Only if module 6 feels thin; also a head start on SC-300.</li></ul></details>
+</div></section>
+
+<section id="v-practice" class="view band"><div class="wrap">
+<h1>Practice like it's the job</h1>
+<p class="lead">Four drills built from module 1. More drills unlock as chapters are added.</p>
+<div class="tabs" role="tablist">
+<button role="tab" data-p="sim" aria-selected="true">Admin center simulator</button><button role="tab" data-p="role">Role picker</button><button role="tab" data-p="quiz">Quiz</button><button role="tab" data-p="flash">Flashcards</button></div>
+
+<div class="pane on" id="p-sim">
+<p class="small">A practice copy of the menus, simplified. It isn't a Microsoft product, and real menus may differ. Read the ticket, then click to the setting that solves it.</p>
+<div class="ticket" id="simticket"></div>
+<div class="sim"><div class="simbar" id="simbar"><button data-c="m365" aria-pressed="true">Microsoft 365 admin center</button><button data-c="entra" aria-pressed="false">Entra admin center</button></div>
+<div class="simnav" id="simnav"></div><div class="simmain" id="simmain"></div></div>
+<div class="fb" id="simfb" role="status"></div>
+<div class="row"><button class="btn pri" id="simnext">Next ticket</button><button class="btn" id="simshow" hidden>Show the answer</button><span class="score" id="simscore"></span></div>
+</div>
+
+<div class="pane" id="p-role">
+<div class="ticket" id="roletask"></div>
+<div class="opts" id="roleopts"></div>
+<div class="fb" id="rolefb" role="status"></div>
+<div class="row"><button class="btn pri" id="rolenext">Next task</button><span class="score" id="rolescore"></span></div>
+</div>
+
+<div class="pane" id="p-quiz">
+<p class="crumb" id="qcount"></p>
+<h3 id="qtext"></h3>
+<div class="opts" id="qopts"></div>
+<div class="fb" id="qfb" role="status"></div>
+<div class="row"><button class="btn pri" id="qnext">Next question</button><span class="score" id="qscore"></span></div>
+</div>
+
+<div class="pane" id="p-flash">
+<div class="row" id="fdeck" style="margin:0 0 12px"><button class="btn" data-d="c" aria-pressed="true">Concepts</button><button class="btn" data-d="a" aria-pressed="false">Exam core</button><button class="btn" data-d="b" aria-pressed="false">Background</button></div>
+<p class="small">Tap the card to flip it. Cards you mark shaky come back more often. Background terms are old or on-premises words: recognize them, then move on.</p>
+<div class="card" id="fcard" tabindex="0" role="button"></div>
+<div class="row"><button class="btn" id="fshaky">Shaky</button><button class="btn pri" id="fknow">I know it</button><span class="small" id="fstat"></span></div>
+</div>
+</div></section>
+
+<section id="v-skills" class="view band"><div class="wrap">
+<h1>All 58 skills Microsoft measures</h1>
+<p class="lead">Rate each one: 0 means not yet, 3 means you could teach it. Your ratings light up the building.</p>
+<div class="row" style="margin-bottom:12px"><button class="btn" id="openall">Open all groups</button><button class="btn" id="resetall">Clear my ratings</button><span class="small" id="resetmsg"></span></div>
+<div id="skilllist"></div>
+<p class="small">Skills list from Microsoft's AB-650 study guide, last updated July 27, 2026. Ratings stay in this browser only.</p>
+</div></section>
+
+<section id="v-links" class="view band"><div class="wrap">
+<h1>Where everything lives</h1>
+<div class="grid2">
+<div class="panel"><h3>Your workbook</h3><ul class="notes">
+<li><a href="https://claude.ai/artifact/BExW5d41dZcx4FVuk9uhwF">Session plan and Ticket 001</a></li>
+<li><a href="https://claude.ai/artifact/BExW5d41dZcx4FVuk9uhwF#b42d5ce8-39e1">Concept log</a></li>
+<li><a href="https://claude.ai/artifact/BExW5d41dZcx4FVuk9uhwF#ebb78e84-53c0">Storybook</a></li>
+<li><a href="https://claude.ai/artifact/BExW5d41dZcx4FVuk9uhwF#598ab125-b734">Study guide</a></li></ul></div>
+<div class="panel"><h3>Microsoft</h3><ul class="notes">
+<li><a href="https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ab-650">AB-650 study guide</a></li>
+<li><a href="https://learn.microsoft.com/en-us/credentials/certifications/ai-services-administrator-associate/">Certification and exam page</a></li>
+<li><a href="https://go.microsoft.com/fwlink/?linkid=2226877">Exam sandbox</a> for question formats</li>
+<li><a href="https://microsoftlearning.github.io/AB-650T00_administer_microsoft_365_and_ai_services/">Official hands-on labs</a></li>
+<li><a href="https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/delegate-by-task">Least privileged roles by task</a></li></ul></div>
+<div class="panel"><h3>Community notes</h3><ul class="notes">
+<li><a href="https://vladtalkstech.com/ab-650-study-guide-microsoft-365-and-ai-services-administrator-associate/">Vlad Talks Tech: notes per skill</a></li>
+<li><a href="https://charbelnemnom.com/ab-650-exam-study-guide/">Charbel Nemnom: exam guide</a></li></ul>
+<p class="small">Community notes are not Microsoft's. Check surprises against Microsoft's docs.</p></div>
+</div></div></section>
+</main>
+<footer class="band"><div class="wrap small">Built for AB-650 exam prep. Sign in to sync progress across devices; otherwise it stays in this browser. The exam is in beta, so the skills list may still change.</div></footer>
+
+<script>
+{
+const DOMAINS=[
+{n:"Domain 1: Tenants and workloads (20–25%)",groups:[
+{id:"g1",t:"Configure and manage a tenant",s:["Configure branding: logo, company URL, themes, backgrounds","Implement and manage domains","Configure organizational settings, including security and privacy and the organization profile","Manage and monitor Microsoft 365 licenses, including group-based licensing and pay-as-you-go","Manage and monitor licenses for AI services: Copilot, Agent 365, Copilot Studio","Configure and use Microsoft 365 Backup: setup, restore, monitor","Configure and review network connectivity insights","Monitor service health with Service health, including notifications"]},
+{id:"g2",t:"Manage workloads",s:["Create and manage mailboxes, including shared mailboxes","Create and manage teams: channels, owners, members","Configure Copilot in Teams meetings, including transcription","Create and manage SharePoint sites, including permissions","Configure SharePoint and OneDrive for Copilot: SharePoint Advanced Management, Microsoft Search, site exclusions"]}]},
+{n:"Domain 2: Govern and secure (40–45%)",groups:[
+{id:"g3",t:"Manage identities in Entra",s:["Create and manage users","Manage guest users and external access settings","Create and manage groups, including Microsoft 365 groups","Manage roles, including Privileged Identity Management (PIM)","Create and manage administrative units","Create and manage contacts","Perform bulk management, including Microsoft Graph PowerShell"]},
+{id:"g4",t:"Authentication and access",s:["Configure and manage authentication methods","Implement and manage Entra Password Protection","Configure self-service password reset (SSPR)","Investigate and resolve authentication issues","Implement Conditional Access, including ID Protection and MFA"]},
+{id:"g5",t:"Secure workloads (Defender)",s:["Manage alerts in Defender for Office 365","Configure threat policies and rules","Investigate and respond to email and collaboration threats","Configure attack simulations, including training campaigns"]},
+{id:"g6",t:"Protect data (Purview)",s:["Identify DLP requirements: Exchange, SharePoint, OneDrive, Teams, endpoints, Copilot","Identify information protection requirements: sensitive info types, sensitivity labels, label policies","Identify data lifecycle requirements: retention labels, label policies, retention policies","Review and respond to DLP alerts for Microsoft 365 and AI services","Monitor and secure AI activity with Data Security Posture Management (DSPM)"]}]},
+{n:"Domain 3: AI services (35–40%)",groups:[
+{id:"g7",t:"Enable and manage Copilot",s:["Assess tenant readiness for Copilot, including in-app experiences","Resolve data readiness issues: leaks, oversharing, compliance","Manage web search for Copilot and Copilot Chat","Configure Microsoft 365 Copilot Search","Configure tenant Copilot settings: self-service purchases, admin centers, release preferences, AI disclaimer, video and image generation","Manage Copilot user experiences","Manage Microsoft 365 Copilot Cowork","Manage third-party AI providers","Configure Copilot connectors"]},
+{id:"g8",t:"Implement and manage agents",s:["Manage agent identity lifecycle with Entra Agent ID","Secure agent access: access packages, Conditional Access","Manage agent owners","Configure agent settings: allowed types, sharing, templates, user access","Discover and manage agents in the agent registry","Review, publish, or reject agents in the registry","Install, block, or control access to agents, including custom uploads","Manage tools in Agent 365"]},
+{id:"g9",t:"Secure and govern agents",s:["Monitor agent activity with Agent 365","Protect sensitive data with Agent 365","Evaluate compliance gaps with Agent 365"]},
+{id:"g10",t:"Monitor AI services",s:["Manage and monitor AI service costs","Monitor Copilot usage reports, including workload adoption","Monitor usage and adoption with the Copilot Control System","Monitor service health with the Copilot Control System"]}]}];
+const ML="https://learn.microsoft.com/en-us/training/modules/";
+const PATHS=[
+{t:"Learning path 1: Configure and manage tenants and workloads",u:"https://learn.microsoft.com/training/paths/configure-manage-microsoft-365-tenants-workloads/",m:[["Provision and brand a Microsoft 365 tenant","provision-brand-microsoft-365-tenant"],["License Microsoft 365 and AI services at scale","license-microsoft-365-ai-services"],["Keep a Microsoft 365 tenant resilient and healthy","maintain-microsoft-365-tenant-health"],["Configure Exchange Online and Microsoft Teams workloads","configure-exchange-teams"],["Govern SharePoint and OneDrive for Microsoft Copilot","govern-sharepoint-onedrive-copilot"]]},
+{t:"Learning path 2: Govern and secure tenants and workloads",u:"https://learn.microsoft.com/training/paths/govern-secure-microsoft-365-tenants-workloads/",m:[["Provision and govern identities in Microsoft Entra","provision-govern-identities-entra"],["Implement authentication and access in Microsoft Entra","implement-authentication-access-entra"],["Secure email and collaboration with Defender for Office 365","secure-email-collaboration-defender-office365"],["Protect information with Microsoft Purview information protection","protect-information-purview"],["Prevent data loss and govern the data lifecycle with Purview","prevent-data-loss-lifecycle-purview"]]},
+{t:"Learning path 3: Manage and secure AI services",u:"https://learn.microsoft.com/training/paths/manage-secure-microsoft-365-ai-services/",m:[["Assess readiness and roll out Microsoft Copilot","enable-manage-microsoft-365-copilot"],["Configure Copilot settings and extensibility","configure-copilot-settings-extensibility"],["Establish agent identities with Microsoft Entra Agent ID","establish-agent-identities-entra-agent-id"],["Curate and control agents with the Agent Registry and Agent 365 tools","curate-control-agents-registry-tools"],["Monitor and manage agents with Microsoft Agent 365","agent-365-monitor-manage"],["Govern agents using Agent 365","agent-365-govern"],["Monitor and optimize Microsoft 365 AI services","monitor-optimize-m365-ai-services"]]}];
+
+const KEY="ab650-study-v1";
+let S={conf:{},mods:{"provision-brand-microsoft-365-tenant":"done"},exam:"",flash:{}};
+try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
+const DEF=()=>({conf:{},mods:{"provision-brand-microsoft-365-tenant":"done"},exam:"",flash:{},updated:0});
+let pushT=null;
+const save=()=>{S.updated=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){};queuePush()};
+/* Firebase sync: paste the config from Firebase here. Sync runs only on the hosts listed. */
+const FB_CONFIG={apiKey:"AIzaSyDoVV0pQn1HA4tZmUvbB8gbx4uhKMotDlY",authDomain:"ab650-study-house.firebaseapp.com",projectId:"ab650-study-house",storageBucket:"ab650-study-house.firebasestorage.app",messagingSenderId:"755684772967",appId:"1:755684772967:web:5b30581b28b759a0f358c2"};
+const SYNC_HOSTS=["adaire-b.github.io","localhost","127.0.0.1"];
+let fbUser=null,db=null,fbOn=false,syncMsg="";
+function acctDraw(){const a=document.getElementById("acct");if(!a)return;if(!fbOn){a.innerHTML="";return}a.innerHTML=fbUser?'<span>'+esc(syncMsg||("Signed in as "+(fbUser.email||"you")))+'</span><button class="acctbtn" id="signout">Sign out</button>':'<button class="acctbtn" id="signin">Sign in to sync</button>'}
+function queuePush(){if(!fbUser||!db)return;clearTimeout(pushT);pushT=setTimeout(()=>{db.collection("users").doc(fbUser.uid).set({json:JSON.stringify(S),updatedAt:firebase.firestore.FieldValue.serverTimestamp()}).then(()=>{syncMsg="Saved to your account";acctDraw()}).catch(()=>{syncMsg="Couldn't save; progress kept on this device";acctDraw()})},800)}
+function loadScript(u){return new Promise((ok,no)=>{const s=document.createElement("script");s.src=u;s.onload=ok;s.onerror=no;document.head.appendChild(s)})}
+function startSync(redraw){
+ if(!FB_CONFIG||!SYNC_HOSTS.includes(location.hostname))return;
+ const v="https://www.gstatic.com/firebasejs/10.12.2/";
+ loadScript(v+"firebase-app-compat.js").then(()=>loadScript(v+"firebase-auth-compat.js")).then(()=>loadScript(v+"firebase-firestore-compat.js")).then(()=>{
+  firebase.initializeApp(FB_CONFIG);db=firebase.firestore();fbOn=true;acctDraw();
+  document.getElementById("acct").addEventListener("click",e=>{
+   if(e.target.id==="signin"){const p=new firebase.auth.GoogleAuthProvider();firebase.auth().signInWithPopup(p).catch(err=>{if(err&&err.code==="auth/popup-blocked")firebase.auth().signInWithRedirect(p);else{syncMsg="Sign-in didn't finish";acctDraw()}})}
+   if(e.target.id==="signout")firebase.auth().signOut();
+  });
+  firebase.auth().onAuthStateChanged(u=>{fbUser=u;syncMsg="";acctDraw();if(!u)return;
+   db.collection("users").doc(u.uid).get().then(d=>{let R=null;try{R=d.exists?JSON.parse(d.data().json):null}catch(e){}
+    if(R&&(R.updated||0)>(S.updated||0)){S=Object.assign(DEF(),R);try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){};syncMsg="Progress loaded from your account";acctDraw();redraw()}
+    else queuePush()}).catch(()=>{syncMsg="Couldn't reach your account; using this device";acctDraw()})});
+ }).catch(()=>{fbOn=false;acctDraw()});
+}
+const $=id=>document.getElementById(id);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+const groupPct=g=>{let t=0;g.s.forEach((_,i)=>t+=(S.conf[g.id+"-"+i]||0));return Math.round(t/(g.s.length*3)*100)};
+const allSkills=()=>DOMAINS.flatMap(d=>d.groups.flatMap(g=>g.s.map((_,i)=>g.id+"-"+i)));
+
+function drawHome(){
+ const isRated=g=>g.s.some((_,i)=>S.conf[g.id+"-"+i]!=null);
+ $("floors").innerHTML=DOMAINS.slice().reverse().map(d=>'<div class="floor"><div class="flabel">'+esc(d.n)+'</div>'+d.groups.map(g=>{const p=groupPct(g),r=isRated(g);return '<button class="room'+(r?'':' unrated')+(p>0?' lit':'')+'" style="--n:'+g.s.length+';--p:'+p+'%" data-g="'+g.id+'" aria-label="'+esc(g.t)+', '+(r?p+' percent confident':'not rated')+'"><span class="plaque">'+esc(g.t)+'<b>'+(r?p+'%':'Not rated')+'</b></span><i class="win" aria-hidden="true"></i></button>'}).join('')+'</div>').join('');
+ const ids=allSkills();const rated=ids.filter(k=>S.conf[k]!=null).length;const sum=ids.reduce((a,k)=>a+(S.conf[k]||0),0);
+ const allM=PATHS.flatMap(p=>p.m);const done=allM.filter(m=>S.mods[m[1]]==="done").length;
+ const days=S.exam?Math.ceil((new Date(S.exam+"T09:00")-new Date())/864e5):null;
+ $("stats").innerHTML=[[rated+" of "+ids.length,"skills rated"],[Math.round(sum/(ids.length*3)*100)+"%","overall confidence"],[done+" of "+allM.length,"modules done"],[days==null?"Set a date":days+" days","until the exam"]].map(x=>'<div class="stat"><b>'+x[0]+'</b>'+x[1]+'</div>').join('');
+ const nx=PATHS.flatMap(p=>p.m).find(m=>S.mods[m[1]]!=="done");
+ const rb=$("resume");
+ if(nx){rb.href=ML+nx[1]+"/";rb.target="_blank";rb.rel="noopener";rb.textContent="Resume studying";$("resumewhat").textContent="Next: "+nx[0]+". Opens on Microsoft Learn. Afterward, rate its skills and run the Practice drills."}
+ else{rb.href="#practice";rb.removeAttribute("target");rb.textContent="Practice everything";$("resumewhat").textContent="All modules done. Drill the simulator, quiz, and flashcards, then try the exam sandbox."}
+ $("examdate").value=S.exam||"";
+ const left=allM.length-done;
+ $("pace").textContent=days&&days>0?(left?("About "+(Math.round(days/left*10)/10)+" days per remaining module ("+left+" left)."):"All modules done."):"";
+ document.querySelectorAll(".room").forEach(b=>b.onclick=()=>{location.hash="skills";setTimeout(()=>{const d=$("d-"+b.dataset.g);if(d){d.open=true;d.scrollIntoView({behavior:"smooth"})}},50)});
+}
+$("examdate").onchange=e=>{S.exam=e.target.value;save();drawHome()};
+
+function drawSkills(){
+ $("skilllist").innerHTML=DOMAINS.map(d=>'<h2 style="margin-top:20px">'+esc(d.n)+'</h2>'+d.groups.map(g=>'<details id="d-'+g.id+'"><summary>'+esc(g.t)+' <span class="small">('+g.s.length+' skills, '+groupPct(g)+'% confident)</span></summary>'+g.s.map((s,i)=>{const k=g.id+"-"+i,v=S.conf[k];return '<div class="skill"><div>'+esc(s)+'</div><div class="conf" role="group" aria-label="Confidence">'+[0,1,2,3].map(n=>'<button data-k="'+k+'" data-v="'+n+'" aria-pressed="'+(v===n)+'">'+n+'</button>').join('')+'</div></div>'}).join('')+'</details>').join('')).join('');
+}
+$("skilllist").addEventListener("click",e=>{const b=e.target.closest("button[data-k]");if(!b)return;S.conf[b.dataset.k]=+b.dataset.v;save();b.parentNode.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));const det=b.closest("details");const g=DOMAINS.flatMap(d=>d.groups).find(g=>"d-"+g.id===det.id);det.querySelector("summary .small").textContent="("+g.s.length+" skills, "+groupPct(g)+"% confident)"});
+$("openall").onclick=()=>document.querySelectorAll("#skilllist details").forEach(d=>d.open=true);
+let resetArmed=false;
+$("resetall").onclick=()=>{if(!resetArmed){resetArmed=true;$("resetmsg").textContent="Click again to clear all ratings.";return}S.conf={};save();resetArmed=false;$("resetmsg").textContent="Ratings cleared.";drawSkills()};
+
+function drawLearn(){
+ $("paths").innerHTML=PATHS.map(p=>'<details open><summary>'+esc(p.t)+'</summary><p class="small"><a href="'+p.u+'">Open on Microsoft Learn</a></p>'+p.m.map((m,i)=>'<div class="mod"><div>'+(i+1)+'. <a href="'+ML+m[1]+'/">'+esc(m[0])+'</a></div><select data-m="'+m[1]+'" aria-label="Status of '+esc(m[0])+'">'+[["todo","Not started"],["doing","In progress"],["done","Done"]].map(o=>'<option value="'+o[0]+'"'+((S.mods[m[1]]||"todo")===o[0]?" selected":"")+'>'+o[1]+'</option>').join('')+'</select></div>').join('')+'</details>').join('');
+}
+$("paths").addEventListener("change",e=>{const s=e.target.closest("select[data-m]");if(!s)return;S.mods[s.dataset.m]=s.value;save()});
+
+/* simulator */
+const NAV={m365:[["Home",[["home","Home"]]],["Users",[["users","Active users"]]],["Roles",[["m365roles","Role assignments"]]],["Billing",[["products","Your products"],["licenses","Licenses"],["accounts","Billing accounts"]]],["Settings",[["domains","Domains"],["orgsettings","Org settings"]]],["Health",[["health","Service health"]]]],
+entra:[["Entra ID",[["eusers","Users"],["egroups","Groups"],["eroles","Roles & admins"],["ebrand","Custom Branding"]]],["Identity governance",[["pim","Privileged Identity Management"]]]]};
+const ORG={"Services":[["calendar","Calendar"],["reports","Reports"]],"Security & privacy":[["pwexp","Password expiration policy"],["pronouns","Pronouns"]],"Organization profile":[["themes","Custom themes"],["dataloc","Data location"],["release","Release preferences"],["sendfrom","Send email notifications from your domain"],["orginfo","Organization information"]]};
+const LEAF={home:"The admin center's start page. A launch point, not a setting.",users:"Create and manage user accounts and their licenses.",m365roles:"Common admin roles only. The full catalog is in Entra > Roles & admins.",products:"Your subscriptions, such as E5, and the service plans inside them.",licenses:"Assign licenses to users and see what's in use.",accounts:"Company name and sold-to address. Uses billing permissions.",domains:"Add, verify, set default, and remove domains.",health:"Service health status and notification settings.",eusers:"The directory's user objects.",egroups:"Security and Microsoft 365 groups.",eroles:"The full role catalog. Assign roles here.",ebrand:"The sign-in page's logo, background, and text. Tenant-wide.",pim:"Eligible and time-bound role assignments. Needs Entra ID P2.",calendar:"Whether users may share calendars outside the organization. Users still choose.",reports:"\"Conceal user, group, and site names in all reports.\"",pwexp:"Password expiry for cloud-only accounts. User Administrator.",pronouns:"Lets users add pronouns. Global Administrator, up to 7 hours.",themes:"Navigation bar logo and colors after sign-in. Global Administrator.",dataloc:"Shows where data is stored. View only.",release:"Standard or Targeted release. Global Administrator, up to 24 hours.",sendfrom:"Sends supported system notifications from your verified, email-ready domain.",orginfo:"Organization details. Name and sold-to address changes go through Billing accounts."};
+const PEOPLE={Priya:"Priya Nair, Marketing",Dana:"Dana Whitfield, Operations",Tomas:"Tomas Reyes, Help desk",Lena:"Lena Hart, Compliance",Marcus:"Marcus Bell, IT contractor",Owen:"Owen Castillo, Red Rock"};
+const TICKETS=[
+["Priya","People who haven't signed in yet should see our new logo on the sign-in page.","ebrand","entra","The sign-in page appears before sign-in, so it belongs to Entra, not the Microsoft 365 theme."],
+["Dana","Make the top navigation bar use company colors for signed-in staff.","themes","m365","Themes control the navigation bar after sign-in, and a Global Administrator sets them."],
+["Tomas","Add redrockcompounding.example to the tenant and verify it.","domains","m365","Domains are added and verified here; the TXT record still has to be posted at the registrar."],
+["Dana","Five help-desk staff should get some updates early. Everyone else stays put.","release","m365","Targeted release for select users gives early updates to named people only."],
+["Lena","Usage reports must not show staff names.","reports","m365","Report privacy lives on the Services tab, not Security & privacy."],
+["Lena","Where can I see which region our data is stored in?","dataloc","m365","Data location shows where data is stored; it was set by the sign-up country."],
+["Dana","Give Tomas the Domain Name Administrator role. It isn't listed on the common roles page.","eroles","entra","The Microsoft 365 admin center shows only common roles; Entra's Roles & admins has the full catalog."],
+["Marcus","Before I leave: where do we set password expiration for cloud-only accounts?","pwexp","m365","Password expiration is on Security & privacy and covers cloud-only accounts, not hybrid ones."],
+["Owen","Teams notification emails should come from our own domain, not Microsoft's.","sendfrom","m365","The send-from setting is on Organization profile and needs a verified, email-ready domain."],
+["Priya","Can staff add their pronouns to their profiles?","pronouns","m365","Pronouns is on Security & privacy; turning it on lets each person add their own."],
+["Dana","We moved offices. Update the company's sold-to address.","accounts","m365","Company name and sold-to address changes go through Billing accounts, not Org settings."],
+["Owen","Managers want to share calendars with outside partners.","calendar","m365","Calendar external sharing is on Services. It allows sharing; each user still chooses."],
+["Lena","Tomas should only activate his admin role when he needs it.","pim","entra","PIM makes the role eligible, so Tomas activates it only when needed. It needs Entra ID P2."]];
+const PATH={};
+NAV.m365.forEach(g=>g[1].forEach(l=>{PATH[l[0]]=["Microsoft 365 admin center",g[0],l[1]]}));
+NAV.entra.forEach(g=>g[1].forEach(l=>{PATH[l[0]]=["Entra admin center",g[0],l[1]]}));
+Object.keys(ORG).forEach(k=>ORG[k].forEach(l=>{PATH[l[0]]=["Microsoft 365 admin center","Settings","Org settings",k,l[1]]}));
+const pathHTML=l=>'<div class="path" aria-label="Menu path">'+(PATH[l]||[]).map(x=>'<span>'+esc(x)+'</span>').join('')+'</div>';
+let sim={c:"m365",page:null,orgtab:"Services",t:0,ok:0,tries:0,answered:false,solved:false};
+const order=TICKETS.map((_,i)=>i).sort(()=>Math.random()-.5);
+const curT=()=>TICKETS[order[sim.t%order.length]];
+function simTicket(){const t=curT();$("simticket").innerHTML='<div class="th"><b>Ticket #'+(1041+order[sim.t%order.length])+'</b><span>From '+esc(PEOPLE[t[0]]||t[0])+'</span></div><div class="tb">'+esc(t[1])+'</div>';$("simfb").className="fb";$("simshow").hidden=true;sim.answered=false;sim.solved=false;sim.page=null;sim.c="m365";simDraw()}
+function simDraw(){
+ document.querySelectorAll("#simbar button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.c===sim.c));
+ $("simnav").innerHTML=NAV[sim.c].map(g=>'<button class="grp" tabindex="-1">'+esc(g[0])+'</button>'+g[1].map(l=>'<button class="sub" data-l="'+l[0]+'">'+esc(l[1])+'</button>').join('')).join('');
+ if(sim.page==="orgsettings"){$("simmain").innerHTML='<div class="crumb">Settings > Org settings</div><div class="simtabs" role="tablist">'+Object.keys(ORG).map(k=>'<button role="tab" data-t="'+esc(k)+'" aria-selected="'+(k===sim.orgtab)+'">'+esc(k)+'</button>').join('')+'</div>'+ORG[sim.orgtab].map(l=>'<button class="leaf" data-l="'+l[0]+'">'+esc(l[1])+'</button>').join('')}
+ else $("simmain").innerHTML='<p class="small">'+(sim.c==="m365"?"Pick a page from the menu. Settings > Org settings has three tabs.":"This is the identity side: users, groups, roles, sign-in branding, and governance.")+'</p>';
+}
+function simSolved(prefix){const t=curT();const fb=$("simfb");fb.className="fb ok";fb.innerHTML="<b>"+prefix+"</b>"+pathHTML(t[2])+esc(t[4]);sim.solved=true;$("simshow").hidden=true}
+function simPick(l){
+ if(l==="orgsettings"){sim.page="orgsettings";simDraw();return}
+ if(sim.solved)return;
+ const t=curT();const fb=$("simfb");
+ if(l===t[2]){if(!sim.answered){sim.ok++;sim.tries++}sim.answered=true;simSolved("Solved.")}
+ else{fb.className="fb no";fb.innerHTML="<b>Not this one.</b> You opened "+esc((PATH[l]||[]).slice(-1)[0]||"")+": "+esc(LEAF[l]||"")+" Try again"+(t[3]!==sim.c?", and check which admin center you're in.":".");if(!sim.answered){sim.tries++;sim.answered=true}$("simshow").hidden=false}
+ $("simscore").textContent=sim.ok+" of "+sim.tries+" solved first try";
+}
+$("simbar").onclick=e=>{const b=e.target.closest("button[data-c]");if(!b)return;sim.c=b.dataset.c;sim.page=null;simDraw()};
+$("simnav").onclick=e=>{const b=e.target.closest("button[data-l]");if(b)simPick(b.dataset.l)};
+$("simmain").onclick=e=>{const tb=e.target.closest("button[data-t]");if(tb){sim.orgtab=tb.dataset.t;simDraw();return}const b=e.target.closest("button[data-l]");if(b)simPick(b.dataset.l)};
+$("simnext").onclick=()=>{sim.t++;simTicket()};
+$("simshow").onclick=()=>simSolved("Here is the answer.");
+
+/* role picker */
+const ROLES=["Global Administrator","Domain Name Administrator","Privileged Role Administrator","Organizational Branding Administrator","Global Reader","User Administrator","License Administrator","Billing Administrator","Helpdesk Administrator","Exchange Administrator"];
+const TASKS=[["Add, verify, and later remove a custom domain","Domain Name Administrator","It covers the domain lifecycle and nothing else."],["Assign Domain Name Administrator to someone else","Privileged Role Administrator","It manages role assignments without full Global Admin."],["Change the logo on the sign-in page","Organizational Branding Administrator","Sign-in branding lives in Entra Custom Branding."],["Change the navigation bar theme","Global Administrator","Themes have no narrower role."],["Let an auditor view settings without changing anything","Global Reader","Read-only across admin centers."],["Create new user accounts","User Administrator","Users and groups, without role assignment."],["Set the password expiration policy","User Administrator","The admin-center procedure uses User Administrator."],["Assign licenses to new hires","License Administrator","Licenses only."],["Manage subscriptions and invoices","Billing Administrator","Purchases, subscriptions, and billing."],["Reset a regular staff member's password","Helpdesk Administrator","Front-line resets for non-admins."],["Turn on pronouns for the organization","Global Administrator","The unit lists Global Administrator for this setting."],["Put five people on Targeted release","Global Administrator","Release preferences need Global Administrator."],["Configure a shared mailbox's settings in depth","Exchange Administrator","Workload-specific role for one service."]];
+let rp={i:-1,ok:0,n:0,done:false};
+function roleNext(){rp.i=(rp.i+1)%TASKS.length;rp.done=false;const t=TASKS[rp.i];const opts=[t[1],...ROLES.filter(r=>r!==t[1]).sort(()=>Math.random()-.5).slice(0,3)].sort(()=>Math.random()-.5);$("roletask").innerHTML='<div class="who">Task</div>'+esc(t[0])+' Which role, with least privilege?';$("roleopts").innerHTML=opts.map(o=>'<button class="opt" data-r="'+esc(o)+'">'+esc(o)+'</button>').join('');$("rolefb").className="fb"}
+$("roleopts").onclick=e=>{const b=e.target.closest("button[data-r]");if(!b||rp.done)return;rp.done=true;rp.n++;const t=TASKS[rp.i];const ok=b.dataset.r===t[1];if(ok)rp.ok++;document.querySelectorAll("#roleopts .opt").forEach(x=>{if(x.dataset.r===t[1])x.classList.add("right");else if(x===b)x.classList.add("wrong")});const fb=$("rolefb");fb.className="fb "+(ok?"ok":"no");fb.innerHTML="<b>"+(ok?"Right.":"Not quite.")+"</b> "+esc(t[1])+": "+esc(t[2]);$("rolescore").textContent=rp.ok+" of "+rp.n+" right"};
+$("rolenext").onclick=roleNext;
+
+/* quiz */
+const QZ=[["People who haven't signed in yet should see a new background. Which portal?",["Org settings > Organization profile","Entra admin center > Custom Branding","Microsoft 365 theme","SharePoint admin center"],1,"Before sign-in is Entra. Themes change the navigation bar after sign-in."],
+["A user belongs to two groups with different group themes. What does she see?",["The newest theme","A blend","The default theme","The larger group's theme"],2,"Multiple themed groups means the default theme."],
+["You verified a new domain, but new users still get the old one. Why?",["DNS is still updating","Verifying doesn't make it the default","The MX record is missing","Domain Connect is off"],1,"Setting the default is a separate step, and it renames no one."],
+["A verified domain: is email ready?",["Yes","No. Mail needs mailboxes and the MX record","Only if it's the default","Only with Domain Connect"],1,"TXT proves ownership. MX routes mail."],
+["Removing an old domain fails. What must be true to remove it?",["Re-verified in 30 days","Not the default, and zero references","Domain Connect enabled","It must be the onmicrosoft.com domain"],1,"Two gates: not default, and nothing using it."],
+["How many group themes can you add beside the default?",["2","4","5","Unlimited"],1,"One default plus up to four group themes."],
+["Which group type can a group theme target?",["Security group","Distribution group","Microsoft 365 group","Any group"],2,"Only Microsoft 365 groups, up to five per theme."],
+["Which message keeps Microsoft's sender after you set a custom send-from domain?",["Teams missed-activity","SharePoint news digest","SharePoint one-time passcode","None"],2,"OneDrive and SharePoint passcodes stay on no-reply@notify.microsoft.com."],
+["Where is the company's sold-to address changed?",["Org settings > Organization profile","Billing > Billing accounts","Settings > Domains","Entra > Overview"],1,"Billing accounts, with billing permissions."],
+["You turn on calendar external sharing. What happens?",["All calendars become shared","Users may now choose to share","Only admins can share","Nothing until Targeted release"],1,"The setting enables a choice. Each user still decides."],
+["How long can a release preference change take?",["Instantly","Up to 7 hours","Up to 24 hours","Up to 30 days"],2,"Up to 24 hours. Pronouns can take up to 7."],
+["Which role is least privileged to assign other admin roles?",["Global Administrator","User Administrator","Privileged Role Administrator","Security Administrator"],2,"Privileged Role Administrator manages role assignments."]];
+let qz={order:QZ.map((_,i)=>i).sort(()=>Math.random()-.5),i:0,ok:0,n:0,done:false};
+function qDraw(){const q=QZ[qz.order[qz.i%QZ.length]];qz.done=false;$("qcount").textContent="Question "+(qz.i%QZ.length+1)+" of "+QZ.length;$("qtext").textContent=q[0];$("qopts").innerHTML=q[1].map((o,j)=>'<button class="opt" data-j="'+j+'">'+esc(o)+'</button>').join('');$("qfb").className="fb"}
+$("qopts").onclick=e=>{const b=e.target.closest("button[data-j]");if(!b||qz.done)return;qz.done=true;qz.n++;const q=QZ[qz.order[qz.i%QZ.length]];const ok=+b.dataset.j===q[2];if(ok)qz.ok++;document.querySelectorAll("#qopts .opt").forEach(x=>{if(+x.dataset.j===q[2])x.classList.add("right");else if(x===b)x.classList.add("wrong")});const fb=$("qfb");fb.className="fb "+(ok?"ok":"no");fb.innerHTML="<b>"+(ok?"Right.":"Not quite.")+"</b> "+esc(q[3]);$("qscore").textContent=qz.ok+" of "+qz.n+" right"};
+$("qnext").onclick=()=>{qz.i++;qDraw()};
+
+/* flashcards */
+const FC=[["Tenant","One organization's private Microsoft 365 space, defined by its Entra ID directory."],["Subscription","The package you pay for, such as E5. It comes with seats."],["Service plan","One service inside a subscription, such as Exchange Online."],["License","One user's entitlement to a subscription. Service plans can be switched off per license."],["Directory (Entra ID)","The list of users, groups, and roles. It is what makes the tenant yours."],["Data location","Where data is stored, set by the sign-up country. View it in Org settings > Organization profile."],["Initial domain","yourname.onmicrosoft.com. Permanent and can't be removed."],["Default domain","The domain new users get unless you choose another. Changing it renames no one."],["TXT verification record","Proves you own a domain (MS=...). It doesn't route mail."],["MX record","Routes mail to the domain. Change it after mailboxes exist."],["Domain Connect","The registrar adds Microsoft's records after you authorize. Still needs the registrar login."],["Least privilege","Give the narrowest role that does the task."],["Global Administrator","The master key. Required for themes, pronouns, and release preferences."],["Privileged Role Administrator","Assigns admin roles without being Global Admin."],["Organizational Branding Administrator","Changes the Entra sign-in page, not the Microsoft 365 theme."],["PIM","Privileged Identity Management: eligible roles you activate when needed. Needs Entra ID P2."],["Eligible vs. active","Eligible: may activate the role. Active: holds it now."],["Group theme","Up to 4, each for up to 5 Microsoft 365 groups. Two themed groups means the default theme."],["Custom Branding","Entra ID > Custom Branding. Sign-in page logo, background, text. Tenant-wide."],["Targeted release","Some updates early, for select users or everyone. Up to 24 hours to apply."],["Frontier, Standard, Deferred","Modern release audiences. Deferred delays eligible major updates 30 days."],["Send-from domain","System notifications from your verified, email-ready domain. Passcodes still come from Microsoft."],["Global Reader","Views settings across admin centers without changing them."]];
+const AC=[["Three similar names","AD DS: on-premises directory. Entra ID: cloud identity (your exam). Entra Domain Services: Microsoft-run old-style domain in Azure for old apps."],["ID Protection","Microsoft Entra ID Protection. Spots risky users and sign-ins. Needs P2."],["User and sign-in risk","How likely an account, or one sign-in, is compromised. Used by ID Protection."],["Password writeback","A cloud password reset is written back to on-premises AD for hybrid users. P1."],["Self-service group management","Users create groups or ask to join; owners approve. P1."],["Entra Connect","Syncs on-premises AD accounts into Entra ID. The heart of hybrid identity."],["Free, P1, P2","Entra tiers. Conditional Access needs P1. ID Protection and PIM need P2."],["SaaS","Software as a Service. Software used over the internet by subscription; the provider runs it. Microsoft 365 is SaaS."],["PaaS","Platform as a Service. The provider runs the platform; you build apps on it."],["IaaS","Infrastructure as a Service. You rent servers and storage and manage the rest."],["GA","General availability (a finished feature), or Global Administrator. Read the context."],["DNS","Domain Name System. The internet's address book."],["TXT","Text record. Microsoft's MS=... record proves you own a domain."],["MX","Mail exchanger record. Where a domain's email is delivered."],["CNAME","Canonical name record. A DNS alias, like autodiscover."],["TTL","Time to live. How long DNS answers are cached, so changes take time."],["SPF","Sender Policy Framework. Which servers may send mail for your domain."],["DKIM","DomainKeys Identified Mail. Signs mail so receivers know it wasn't altered."],["DMARC","Domain-based Message Authentication, Reporting, and Conformance. What to do when SPF or DKIM fails."],["OTP","One-time passcode. A single-use code to confirm identity."],["UPN","User principal name. A sign-in name like dana@junipersage.example."],["RBAC","Role-based access control. Permissions through roles."],["PIM","Privileged Identity Management. Activate admin roles only when needed. Needs Entra ID P2."],["AU","Administrative unit. A slice of the directory you can delegate admin over."],["MFA","Multifactor authentication. A second proof at sign-in."],["SSPR","Self-service password reset. Users reset their own passwords."],["CA","Conditional Access. If-then sign-in rules."],["SSO","Single sign-on. One sign-in opens many apps."],["AD DS","Active Directory Domain Services. The on-premises Windows Server directory."],["Azure AD","The old name for Microsoft Entra ID, renamed in 2023."],["Hybrid identity","Accounts synced from on-premises AD into Entra ID. Their passwords are managed on-premises."],["Application object","An app's definition, or blueprint, in Entra ID."],["Service principal","An app's instance in one tenant, created when the app is registered there."],["Default Directory","The tenant Azure creates automatically when you sign up with a personal Microsoft account."],["Authentication","Proving you are who you say you are, such as a password plus MFA."],["Authorization","Deciding what you may open once you're signed in."],["IdP","Identity provider. The service other apps trust to check who you are. Entra is Microsoft 365's IdP."],["Directory service","Keeps the list of users, devices, and apps. Entra's core job."],["Modern management","Settings sent over the internet to devices anywhere, through Intune."],["Intune","Microsoft's device management service. Replaces Group Policy for cloud devices. Not on AB-650."],["HTTPS","Encrypted web traffic, port 443. Plain HTTP uses port 80. Entra works over these."],["REST API","Asking a service questions with web requests. Entra's is Microsoft Graph."],["Microsoft Graph","The web API for Entra and Microsoft 365. Graph PowerShell is on AB-650."],["SAML","Security Assertion Markup Language. A sign-in standard for single sign-on to business apps."],["OIDC","OpenID Connect. The modern sign-in standard, built on OAuth."],["OAuth","Open Authorization. Lets an app use your data without your password, after you consent."],["Federation","Organizations or services trusting each other's sign-ins."],["Subscription and tenant","An Azure subscription belongs to exactly one tenant; one tenant can hold many subscriptions."],["EOP","Exchange Online Protection. Built-in spam and malware filtering."],["MDO","Microsoft Defender for Office 365. Protection from phishing, bad links, and attachments."],["XDR","Extended detection and response. Connects alerts across email, devices, identities."],["KQL","Kusto Query Language. Searches security data."],["DLP","Data loss prevention. Rules that stop sensitive data leaving."],["SIT","Sensitive information type. A pattern Purview recognizes, like an ID number."],["DSPM","Data Security Posture Management. Purview monitoring of data, including AI activity."],["SAM","SharePoint Advanced Management. Extra SharePoint controls, like finding overshared sites."],["SKU","Stock keeping unit. A product you can buy, such as E5."],["E3, E5, E7","Enterprise plan levels. E7 adds AI services like Agent 365."],["P1, P2","Entra ID plans. P1 adds Conditional Access; P2 adds PIM and ID Protection."],["PAYG","Pay-as-you-go. Billed by use instead of per seat."]];
+const BG=[["Entra Domain Services","A Microsoft-run, old-style domain in Azure, fed from Entra ID, for old apps on Azure VMs. Not on AB-650."],["Managed domain","The old-style domain Entra Domain Services runs for you. No domain controllers to patch."],["VNet","Virtual network. A private network inside Azure where VMs live."],["Site-to-site VPN","A permanent encrypted tunnel between the office network and Azure."],["Replica domain controller","An extra, synced copy of a domain controller."],["Replication","Copying directory changes between domain controllers."],["NTLM","NT LAN Manager. An older Windows sign-in protocol, before Kerberos."],["Domain Admins","The all-powerful admin group in AD DS (with Enterprise Admins)."],["WMI filter","Windows Management Instrumentation filter. Targets Group Policy at certain computers."],["Azure portal","The website for managing Azure, at portal.azure.com."],["EMS","Enterprise Mobility + Security. Older bundle: Entra ID P1/P2, Intune, information protection."],["SLA","Service level agreement. Promised uptime, such as 99.9%."],["Entra Connect Health","Monitors the health of the sync tool."],["AIP","Azure Information Protection. Older name for document protection now in Purview."],["MIM","Microsoft Identity Manager. Old on-premises identity sync product."],["VPN","Virtual private network. An encrypted tunnel into the office network."],["RADIUS","Remote Authentication Dial-In User Service. Old network sign-in for VPNs and Wi-Fi."],["LOB app","Line-of-business app. A company's own internal app."],["Cloud App Discovery","Finds which cloud apps staff are using."],["OU","Organizational unit. A folder in on-premises AD DS. Entra ID has none; use groups and administrative units."],["GPO","Group Policy Object. On-premises settings pushed to computers. Entra uses modern management (Intune) instead."],["Domain controller","A server that runs AD DS on-premises."],["Domain join","The old on-premises way: a PC joins AD DS and takes Group Policy."],["Object","Any one thing stored in the directory: a user, group, device, or app."],["Class","The type of a directory object, such as user, group, device, or application."],["Schema","The list of classes the directory allows. Entra has no computer or OU class."],["AD CS","Active Directory Certificate Services. Issues digital certificates on-premises."],["AD LDS","Active Directory Lightweight Directory Services. A small directory for one app."],["AD FS","Active Directory Federation Services. On-premises server for signing in to outside apps with a company account."],["AD RMS","Active Directory Rights Management Services. On-premises limits on who can open or forward a document."],["X.500","An old standard for tree-shaped directories. AD DS follows it."],["LDAP","Lightweight Directory Access Protocol. How apps query AD DS. Entra doesn't support it."],["Kerberos","AD DS's ticket-based sign-in on the office network. Entra doesn't use it."],["Trust","A link letting one AD DS domain accept another's users. Entra uses federation instead."],["WS-Federation","Web Services Federation. An older Microsoft sign-in standard."],["VM","Virtual machine. A computer running as software. AD DS on an Azure VM still doesn't use Entra."],["SYSVOL","An AD DS shared folder that holds Group Policy files."],["HIPAA","US law protecting health information."],["PHI","Protected health information, like a person's prescriptions."],["BAA","Business associate agreement. The contract a vendor signs to handle PHI."]];
+const DECKS={c:FC,a:AC,b:BG};
+let fc={d:"c",i:0,back:false};
+const fk=i=>fc.d+":"+DECKS[fc.d][i][0];
+const fcPick=()=>{const D=DECKS[fc.d];const pool=D.map((_,i)=>i);const sh=pool.filter(i=>S.flash[fk(i)]==="s");fc.i=(sh.length&&Math.random()<.5)?sh[Math.floor(Math.random()*sh.length)]:pool[Math.floor(Math.random()*pool.length)];fc.back=false;fcDraw()};
+function fcDraw(){const D=DECKS[fc.d];const c=D[fc.i];const el=$("fcard");el.className="card"+(fc.back?" back":"");el.textContent=fc.back?c[1]:c[0];let k=0,s=0;D.forEach((_,i)=>{const v=S.flash[fk(i)];if(v==="k")k++;if(v==="s")s++});$("fstat").textContent=k+" known, "+s+" shaky, "+D.length+" cards"}
+$("fcard").onclick=()=>{fc.back=!fc.back;fcDraw()};
+$("fcard").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();fc.back=!fc.back;fcDraw()}};
+$("fshaky").onclick=()=>{S.flash[fk(fc.i)]="s";save();fcPick()};
+$("fknow").onclick=()=>{S.flash[fk(fc.i)]="k";save();fcPick()};
+$("fdeck").onclick=e=>{const b=e.target.closest("button[data-d]");if(!b)return;fc.d=b.dataset.d;document.querySelectorAll("#fdeck button").forEach(x=>x.setAttribute("aria-pressed",x===b));fcPick()};
+
+/* tabs and routing */
+document.querySelector(".tabs").onclick=e=>{const b=e.target.closest("button[data-p]");if(!b)return;document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",x===b));document.querySelectorAll(".pane").forEach(p=>p.classList.toggle("on",p.id==="p-"+b.dataset.p))};
+const VIEWS=["home","learn","practice","skills","links"];
+function route(){const h=location.hash.slice(1);const v=VIEWS.includes(h)?h:"home";VIEWS.forEach(x=>$("v-"+x).classList.toggle("on",x===v));document.querySelectorAll("nav a").forEach(a=>{if(a.getAttribute("href")==="#"+v)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});if(v==="home")drawHome();if(v==="skills")drawSkills();if(v==="learn")drawLearn();window.scrollTo(0,0)}
+window.addEventListener("hashchange",route);
+drawSkills();drawLearn();simTicket();roleNext();qDraw();fcPick();route();
+startSync(()=>{drawSkills();drawLearn();fcDraw();route()});
+}
+</script>
+</body>
+</html>
