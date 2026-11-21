@@ -72,7 +72,7 @@ button,select,input{font:inherit;font-size:16px;color:inherit}
 .room{flex:var(--n) 1 150px;min-height:112px;position:relative;border:0;border-radius:4px;background:var(--wall);text-align:left;padding:8px;cursor:pointer;overflow:hidden;box-shadow:inset 0 -6px 0 color-mix(in srgb,var(--sage) 55%,transparent)}
 .room::before{content:"";position:absolute;inset:auto 0 0 0;height:var(--p);background:linear-gradient(to top,var(--glow),color-mix(in srgb,var(--glow) 55%,var(--wall)));transition:height .6s}
 .room.unrated{background:repeating-linear-gradient(135deg,var(--pink) 0 8px,var(--wall) 8px 16px)}
-.plaque{position:relative;display:inline-block;max-width:calc(100% - 44px);hyphens:auto;overflow-wrap:anywhere;background:color-mix(in srgb,#fffdf6 94%,transparent);color:#1c2a21;border-radius:6px;padding:6px 8px;font-weight:600;font-size:14px;line-height:1.25;box-shadow:0 1px 0 rgba(0,0,0,.12)}
+.plaque{position:relative;display:inline-block;max-width:calc(100% - 44px);hyphens:auto;overflow-wrap:break-word;background:color-mix(in srgb,#fffdf6 94%,transparent);color:#1c2a21;border-radius:6px;padding:6px 8px;font-weight:600;font-size:14px;line-height:1.25;box-shadow:0 1px 0 rgba(0,0,0,.12)}
 .plaque b{display:block;font-size:20px;margin-top:4px}
 .room.unrated .plaque b{font-size:15px;color:#6b5a3a}
 .win{position:absolute;right:8px;bottom:12px;width:30px;height:36px;border-radius:3px;border:3px solid var(--hdr);background:linear-gradient(var(--hdr),var(--hdr)) 50% 0/3px 100% no-repeat,linear-gradient(var(--hdr),var(--hdr)) 0 50%/100% 3px no-repeat,color-mix(in srgb,var(--ink) 18%,var(--wall))}
@@ -258,7 +258,7 @@ footer{border-top:6px solid var(--sage);margin-top:24px}
 
 <section id="v-practice" class="view band"><div class="wrap">
 <h1>Practice like it's the job</h1>
-<p class="lead">Four drills built from module 1. More drills unlock as chapters are added.</p>
+<p class="lead">Five drills built from module 1. More unlock as chapters are added.</p>
 <div class="tabs" role="tablist">
 <button role="tab" data-p="sim" aria-selected="true">Admin center simulator</button><button role="tab" data-p="role">Role picker</button><button role="tab" data-p="quiz">Quiz</button><button role="tab" data-p="flash">Flashcards</button><button role="tab" data-p="self">Self-test</button></div>
 
@@ -341,7 +341,7 @@ const DOMAINS=[
 {id:"g2",t:"Manage workloads",s:["Create and manage mailboxes, including shared mailboxes","Create and manage teams: channels, owners, members","Configure Copilot in Teams meetings, including transcription","Create and manage SharePoint sites, including permissions","Configure SharePoint and OneDrive for Copilot: SharePoint Advanced Management, Microsoft Search, site exclusions"]}]},
 {n:"Domain 2: Govern and secure (40–45%)",groups:[
 {id:"g3",t:"Manage identities in Entra",s:["Create and manage users","Manage guest users and external access settings","Create and manage groups, including Microsoft 365 groups","Manage roles, including Privileged Identity Management (PIM)","Create and manage administrative units","Create and manage contacts","Perform bulk management, including Microsoft Graph PowerShell"]},
-{id:"g4",t:"Authentication and access",s:["Configure and manage authentication methods","Implement and manage Entra Password Protection","Configure self-service password reset (SSPR)","Investigate and resolve authentication issues","Implement Conditional Access, including ID Protection and MFA"]},
+{id:"g4",t:"Authen\u00adtication and access",s:["Configure and manage authentication methods","Implement and manage Entra Password Protection","Configure self-service password reset (SSPR)","Investigate and resolve authentication issues","Implement Conditional Access, including ID Protection and MFA"]},
 {id:"g5",t:"Secure workloads (Defender)",s:["Manage alerts in Defender for Office 365","Configure threat policies and rules","Investigate and respond to email and collaboration threats","Configure attack simulations, including training campaigns"]},
 {id:"g6",t:"Protect data (Purview)",s:["Identify DLP requirements: Exchange, SharePoint, OneDrive, Teams, endpoints, Copilot","Identify information protection requirements: sensitive info types, sensitivity labels, label policies","Identify data lifecycle requirements: retention labels, label policies, retention policies","Review and respond to DLP alerts for Microsoft 365 and AI services","Monitor and secure AI activity with Data Security Posture Management (DSPM)"]}]},
 {n:"Domain 3: AI services (35–40%)",groups:[
